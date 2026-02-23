@@ -1,23 +1,27 @@
+// app/api/pdf/route.ts
 import puppeteerCore from "puppeteer-core";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+// URL to the specific Chromium version compatible with the library
+const CHROMIUM_PACK_URL = "https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar";
+
 async function getBrowser() {
-  const isVercel = !!process.env.VERCEL;
+  const isVercel = !!process.env.VERCEL || process.env.NODE_ENV === 'production';
 
   if (isVercel) {
-    // Dynamic require to bypass type errors and optimize Vercel bundle
     const chromium = require("@sparticuz/chromium-min");
     return puppeteerCore.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
+      // We explicitly provide the remote URL to fix the "directory does not exist" error
+      executablePath: await chromium.executablePath(CHROMIUM_PACK_URL),
       headless: chromium.headless,
     });
   }
 
-  // Local Development: Uses your local Chrome install
+  // Local development: Point to your local Chrome/Edge
   const puppeteer = require("puppeteer");
   return puppeteer.launch({
     headless: "new",
@@ -27,22 +31,10 @@ async function getBrowser() {
 
 export async function POST(request: Request) {
   const { content } = (await request.json()) as { content?: string };
+  if (!content) return new Response(JSON.stringify({ error: "No content" }), { status: 400 });
 
-  if (!content || typeof content !== "string") {
-    return new Response(JSON.stringify({ error: "Missing content" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  const originHeader = request.headers.get("origin");
   const host = request.headers.get("host");
-
-  const baseUrl =
-    originHeader ??
-    (host
-      ? `https://${host}`
-      : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const baseUrl = `https://${host}`;
 
   try {
     const browser = await getBrowser();
@@ -58,31 +50,15 @@ export async function POST(request: Request) {
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
-      margin: {
-        top: "20mm",
-        right: "20mm",
-        bottom: "20mm",
-        left: "20mm",
-      },
+      margin: { top: "20mm", right: "20mm", bottom: "20mm", left: "20mm" },
     });
 
     await browser.close();
-
     return new Response(pdfBuffer, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": 'attachment; filename="document.pdf"',
-      },
+      headers: { "Content-Type": "application/pdf" },
     });
-  } catch (error) {
-    console.error("PDF generation failed", error);
-    return new Response(
-      JSON.stringify({ error: "PDF generation failed" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+  } catch (error: any) {
+    console.error("PDF Error:", error);
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
