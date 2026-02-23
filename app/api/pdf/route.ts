@@ -1,6 +1,4 @@
-import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
-import puppeteer from "puppeteer";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -9,6 +7,8 @@ async function getBrowser() {
   const isVercel = !!process.env.VERCEL;
 
   if (isVercel) {
+    // Dynamic require to bypass type errors and optimize Vercel bundle
+    const chromium = require("@sparticuz/chromium-min");
     return puppeteerCore.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
@@ -17,8 +17,11 @@ async function getBrowser() {
     });
   }
 
+  // Local Development: Uses your local Chrome install
+  const puppeteer = require("puppeteer");
   return puppeteer.launch({
     headless: "new",
+    executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
   });
 }
 
@@ -35,7 +38,6 @@ export async function POST(request: Request) {
   const originHeader = request.headers.get("origin");
   const host = request.headers.get("host");
 
-  // Prefer Origin header, then fall back to host or env var
   const baseUrl =
     originHeader ??
     (host
@@ -45,7 +47,8 @@ export async function POST(request: Request) {
   try {
     const browser = await getBrowser();
     const page = await browser.newPage();
-    await page.evaluateOnNewDocument((markdown) => {
+    
+    await page.evaluateOnNewDocument((markdown: string) => {
       (window as any).__MD_PRINT_CONTENT__ = markdown;
     }, content);
 
@@ -63,16 +66,15 @@ export async function POST(request: Request) {
       },
     });
 
-    const response = new Response(pdfBuffer, {
+    await browser.close();
+
+    return new Response(pdfBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": 'attachment; filename="document.pdf"',
       },
     });
-
-    await browser.close();
-    return response;
   } catch (error) {
     console.error("PDF generation failed", error);
     return new Response(
@@ -84,4 +86,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
