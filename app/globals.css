@@ -1,8 +1,19 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "katex/dist/katex.min.css";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111827;
+  /* Override Tailwind Typography defaults to prevent faint text */
+  --tw-prose-body: #111827;
+  --tw-prose-headings: #111827;
+  --tw-prose-links: #2563eb;
+  --tw-prose-bold: #111827;
+  --tw-prose-quotes: #111827;
+  --tw-prose-code: #111827;
+  --tw-prose-pre-code: #f8fafc;
+  --tw-prose-pre-bg: #0f172a;
 }
 
 @theme inline {
@@ -12,15 +23,153 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Offscreen container for react-to-print */
+.print-root {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  width: 210mm;
+  pointer-events: none;
+}
+
+/* ===== MARKDOWN PREVIEW STYLES (AI-CHAT STYLE) ===== */
+
+.prose {
+  color: #111827 !important;
+  max-width: none;
+}
+
+/* High Contrast Code Blocks for Screen */
+.prose pre {
+  background-color: #0f172a !important;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  color: #f8fafc !important; /* Vivid white text for screen */
+  background-color: transparent !important;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+/* Inline Code Rendering */
+.prose :not(pre) > code {
+  background-color: #f1f5f9 !important;
+  color: #e11d48 !important; /* Berry red for visibility */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+/* Remove default backticks added by Tailwind */
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: "";
+}
+
+/* Professional Table Rendering */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.prose th {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  color: #111827;
+}
+
+.prose td {
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  color: #374151;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* ===== A4 PRINT ENGINE ===== */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+
+  body, .print-page, .print-body {
+    background: white !important;
+    color: black !important;
+    width: 210mm;
+  }
+
+  .print-body {
+    font-family: "Times New Roman", serif;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Print Code Blocks: Forced High Contrast Light Mode */
+  .print-body pre {
+    background-color: #f9fafb !important; /* Light gray for ink efficiency */
+    border: 1px solid #9ca3af !important;
+    padding: 12pt !important;
+    margin: 1em 0;
+  }
+
+  /* Force the text inside the code block to be SOLID BLACK */
+  .print-body pre code {
+    color: #000000 !important;
+    background-color: transparent !important;
+    font-size: 10pt;
+    font-family: "Courier New", monospace;
+  }
+
+  /* Inline code for print */
+  .print-body :not(pre) > code {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+    border: 0.5pt solid #d1d5db;
+    font-weight: 500;
+  }
+
+  /* Sharp Table Borders for Print */
+  .print-body th, .print-body td {
+    border: 1px solid #000000 !important;
+    color: black !important;
+  }
+
+  .print-body th {
+    background-color: #eeeeee !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Prevent awkward page breaks */
+  h1, h2, h3, pre, table, blockquote {
+    page-break-inside: avoid;
+  }
 }
