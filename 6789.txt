@@ -1,0 +1,3397 @@
+forward-logs-shared.ts:95 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+forward-logs-shared.ts:95 [HMR] connected
+forward-logs-shared.ts:95 INPUT: # Markdown + Math Demo
+
+Inline math: \(a^2 + b^2 = c^2\)
+
+$$
+\int_0^1 x^2 dx
+$$
+
+forward-logs-shared.ts:95 PREPROCESSED: # Markdown + Math Demo
+
+Inline math: $a^2 + b^2 = c^2$
+
+ $
+\int_0^1 x^2 dx
+ $
+
+forward-logs-shared.ts:95 INPUT: # Markdown + Math Demo
+
+Inline math: \(a^2 + b^2 = c^2\)
+
+$$
+\int_0^1 x^2 dx
+$$
+
+forward-logs-shared.ts:95 PREPROCESSED: # Markdown + Math Demo
+
+Inline math: $a^2 + b^2 = c^2$
+
+ $
+\int_0^1 x^2 dx
+ $
+
+forward-logs-shared.ts:95 INPUT: # Markdown + Math Demo
+
+Inline math: \(a^2 + b^2 = c^2\)
+
+$$
+\int_0^1 x^2 dx
+$$
+
+forward-logs-shared.ts:95 PREPROCESSED: # Markdown + Math Demo
+
+Inline math: $a^2 + b^2 = c^2$
+
+ $
+\int_0^1 x^2 dx
+ $
+
+forward-logs-shared.ts:95 INPUT: # Markdown + Math Demo
+
+Inline math: \(a^2 + b^2 = c^2\)
+
+$$
+\int_0^1 x^2 dx
+$$
+
+forward-logs-shared.ts:95 PREPROCESSED: # Markdown + Math Demo
+
+Inline math: $a^2 + b^2 = c^2$
+
+ $
+\int_0^1 x^2 dx
+ $
+
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+:3000/api/fix-with-ai:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 [Fast Refresh] rebuilding
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 MarkdownPreview - INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 MarkdownPreview - PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 MarkdownPreview - INPUT: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where \(x\) and \(y\) are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where \(x\), \(y\) and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an \(M \times N\) matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+\[
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+\]
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), \(0 < r \le 1\).
+- Product model: illumination \(\times\) reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where \(x,y \in \{0,1,\dots,M-1\}\).
+
+**Resolution:** number of samples in each direction determines **spatial resolution** \(M \times N\). Hi
+forward-logs-shared.ts:95 MarkdownPreview - PREPROCESSED: Below is the corrected version of your study guide. All LaTeX formulas have been fixed to render properly with KaTeX, while the original text, markdown formatting, and ASCII diagrams remain unchanged. I've also added minor improvements for readability (e.g., consistent spacing, proper LaTeX commands) without altering the content.
+
+---
+
+# All-in-one Module-1 Study Guide — Image Processing (complete theory, formulas, diagrams, keywords, exam wording)
+
+I read your syllabus and lecture notes and built this Module-1 guide exactly to LO (learning outcomes). It’s full theory — not shortcuts — written in exam wording you can copy in answers. Read once, then **start writing from memory** (do not only read). References: syllabus and lecture PPT used.  
+
+---
+
+## How to use this guide (2 rules)
+
+1. **Write** each definition and formula aloud 3× from memory after studying a section.
+2. When you finish the guide, do the short-answer & long-answer drills I give next (I’ll give them if you ask).
+
+---
+
+# 1. What is an Image / Digital Image — formal definitions (LO: image fundamentals)
+
+**Definition (exam style):**  
+An **image** is a two-dimensional function \(f(x,y)\), where $x$ and $y$ are spatial coordinates and the amplitude \(f(x,y)\) represents the intensity (or color) at that point. A **digital image** is one where $x$, $y$ and the intensity values are **discrete and finite**. 
+
+**Keywords to include in answer:** 2-D function, spatial coordinates, intensity/gray level, discrete, pixels, pels, matrix.
+
+**One-line answer (high-score):**  
+*A digital image is a discrete two-dimensional function \(f(x,y)\) stored as an $M \times N$ matrix of pixels where each pixel gives the intensity value at coordinates \((x,y)\).* 
+
+---
+
+# 2. Image Formation Model (LO: formation, illumination/reflectance)
+
+**Formula (must quote):**
+$$
+
+\boxed{f(x,y) = i(x,y) \cdot r(x,y)}
+
+$$
+- \(i(x,y)\): **illumination** — light incident on the scene at \((x,y)\).
+- \(r(x,y)\): **reflectance** — fraction of light reflected by object (property of object), $0 < r \le 1$.
+- Product model: illumination $\times$ reflectance → observed intensity. 
+
+**Exam tips:** mention ranges \(0 < i(x,y) < \infty\), \(0 < r(x,y) \le 1\). For transmitted imaging (X‑rays) use **transmittance** instead of reflectance.
+
+**Keywords:** illumination, reflectance, product model, transmittivity.
+
+---
+
+# 3. Elements of a Digital Image Processing System (LO: system components)
+
+**List (exam bullet points — write this):**
+
+1. **Image sensor** (CCD/CMOS, photodiode) — converts radiation → electrical signal.
+2. **Illumination source** (when applicable).
+3. **Signal conditioning** (amplifiers, filters) — reduces noise, scales signal.
+4. **Digitizer / ADC** — sampling and quantization (analog → digital).
+5. **Processing unit / Computer** (PC, workstation, GPU).
+6. **Image processing software** (algorithms for enhancement, segmentation, etc.).
+7. **Storage** (RAM/short‑term, online disk, archival media).
+8. **Display** and **hardcopy** devices.
+9. **Networking** (for transfer of large images). 
+
+**One-line exam answer:**  
+*A DIP system consists of sensors and digitizers to acquire images, processing hardware/software, storage, displays and communication links.*
+
+**Keywords:** front‑end subsystem, frame buffer, mass storage (short‑term, online, archival).
+
+---
+
+# 4. Types of Image Processing (LO: classification)
+
+**Based on method:**
+
+* **Analog image processing** — optical/electrical manipulations (no computer).
+* **Digital image processing (DIP)** — algorithms on discrete pixels. 
+
+**Based on level of operation (very important):**
+
+* **Low‑level processing (LLP):** input image → output image (e.g., noise reduction, enhancement).
+* **Mid‑level processing (MLP):** image → features/objects (e.g., segmentation, edge detection).
+* **High‑level processing (HLP):** features → interpretation/decision (e.g., recognition). 
+
+**Keywords:** enhancement, restoration, segmentation, representation, recognition.
+
+---
+
+# 5. Image Sensing & Acquisition (LO: sensors, acquisition steps)
+
+**Definitions:**
+
+* **Image sensing:** detection of energy (light, x‑ray, ultrasound) by a sensor; output is analog.
+* **Image acquisition:** converting sensed analog signals into a digital image by **sampling** and **quantization**. 
+
+**Acquisition components (short):** illumination, focusing optics, sensor, signal conditioner, ADC, digitizer control, storage.
+
+**Common sensor arrangements:** single sensor (scanning), linear sensor strip (line scanning), circular sensor ring (CT), 2‑D sensor array (CCD/CMOS). (Pros/cons covered later.) 
+
+---
+
+# 6. Sampling (spatial) — full theory (LO: sampling, Nyquist)
+
+**Concept:** Sampling converts the continuous spatial coordinates into discrete grid points (pixels).
+
+**Notation:** continuous image \(f(s,t)\) → sampled \(f(x,y)\) where $x,y \in \{0,1,\dots,M-1\}$.
+
+**Resolution:** number of samples in each direction determines **spatial resolution** $M \times N$. Higher $M,N$ → mor
+forward-logs-shared.ts:95 [Fast Refresh] done in 217ms

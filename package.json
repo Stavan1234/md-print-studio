@@ -9,8 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@sparticuz/chromium-min": "^143.0.4",
     "@tailwindcss/typography": "^0.5.19",
+    "groq-sdk": "^0.37.0",
     "katex": "^0.16.32",
     "next": "16.1.6",
     "puppeteer-core": "^24.37.5",

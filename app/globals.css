@@ -43,7 +43,10 @@ body {
 
 .prose {
   color: #111827 !important;
-  max-width: none;
+  /* max-width: none; */
+  overflow-x: auto;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 /* High Contrast Code Blocks for Screen */
@@ -55,6 +58,7 @@ body {
   margin: 1.5rem 0;
   overflow-x: auto;
 }
+
 
 .prose pre code {
   color: #f8fafc !important; /* Vivid white text for screen */
