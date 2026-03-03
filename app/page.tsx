@@ -8,33 +8,33 @@ import { useReactToPrint } from "react-to-print";
 export default function Home() {
   const [text, setText] = useState(`# Markdown + Math Demo
 
-Inline math: \\(a^2 + b^2 = c^2\\)
+Inline math: \(a^2 + b^2 = c^2\)
 
 $$
-\\int_0^1 x^2 dx
+\int_0^1 x^2 dx
 $$
 `);
 
-const [isFixing, setIsFixing] = useState(false);
+  const [isFixing, setIsFixing] = useState(false);
 
-const handleFixWithAI = async () => {
-  setIsFixing(true);
-  try {
-    const response = await fetch('/api/fix-with-ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: text }),
-    });
-    if (response.ok) {
-      const { fixed } = await response.json();
-      setText(fixed);
+  const handleFixWithAI = async () => {
+    setIsFixing(true);
+    try {
+      const response = await fetch("/api/fix-with-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: text }),
+      });
+      if (response.ok) {
+        const { fixed } = await response.json();
+        setText(fixed);
+      }
+    } catch (error) {
+      console.error("AI fix failed", error);
+    } finally {
+      setIsFixing(false);
     }
-  } catch (error) {
-    console.error('AI fix failed', error);
-  } finally {
-    setIsFixing(false);
-  }
-};
+  };
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -103,28 +103,26 @@ const handleFixWithAI = async () => {
       </div>
 
       <main className="min-h-screen bg-zinc-50 px-6 py-8">
-        <div className="mx-auto max-w-6xl space-y-6">
-          {/* <button
-            onClick={handleFix}
-            disabled={isFixing}
-            className="px-4 py-2 rounded-full bg-blue-600 text-white text-sm shadow-md hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {isFixing ? "Fixing..." : "Validate & Fix"}
-          </button> */}
+        <div className="mx-auto max-w-6xl">
           <button
-  onClick={handleFixWithAI}
-  disabled={isFixing}
-  className="px-4 py-2 rounded-full bg-green-600 text-white text-sm shadow-md hover:bg-green-700 transition-colors disabled:opacity-50"
->
-  {isFixing ? 'AI Fixing...' : '✨ Fix with AI'}
-</button>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <textarea
-              className="w-full h-[70vh] resize-none rounded-xl border border-zinc-200 bg-white p-4 font-mono text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-400"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
+            onClick={handleFixWithAI}
+            disabled={isFixing}
+            className="mb-4 px-4 py-2 rounded-full bg-green-600 text-white text-sm shadow-md hover:bg-green-700 transition-colors disabled:opacity-50"
+          >
+            {isFixing ? "AI Fixing..." : "✨ Fix with AI"}
+          </button>
+          
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-[400px_1fr]">
+            {/* Fixed/Sticky textarea container */}
+            <div className="sticky top-6 self-start">
+              <textarea
+                className="w-full h-[70vh] resize-none rounded-xl border border-zinc-200 bg-white p-4 font-mono text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-400"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
 
+            {/* Scrollable preview area */}
             <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
               <MarkdownPreview content={text} />
             </div>
