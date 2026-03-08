@@ -1,6 +1,219 @@
-/**
- * Preprocesses text to detect and clean mathematical content.
- */
+// /**
+//  * Preprocesses text to detect and clean mathematical content.
+//  */
+
+// // Mapping from plain text math keywords to LaTeX commands
+// const plainTextToLatex: Record<string, string> = {
+//   // Operators
+//   int: '\\int',
+//   sum: '\\sum',
+//   prod: '\\prod',
+//   coprod: '\\coprod',
+//   bigcup: '\\bigcup',
+//   bigcap: '\\bigcap',
+//   bigvee: '\\bigvee',
+//   bigwedge: '\\bigwedge',
+//   bigoplus: '\\bigoplus',
+//   bigotimes: '\\bigotimes',
+//   bigodot: '\\bigodot',
+//   lim: '\\lim',
+//   log: '\\log',
+//   ln: '\\ln',
+//   exp: '\\exp',
+//   sin: '\\sin',
+//   cos: '\\cos',
+//   tan: '\\tan',
+//   cot: '\\cot',
+//   sec: '\\sec',
+//   csc: '\\csc',
+//   arcsin: '\\arcsin',
+//   arccos: '\\arccos',
+//   arctan: '\\arctan',
+//   sinh: '\\sinh',
+//   cosh: '\\cosh',
+//   tanh: '\\tanh',
+//   coth: '\\coth',
+//   max: '\\max',
+//   min: '\\min',
+//   sup: '\\sup',
+//   inf: '\\inf',
+//   limsup: '\\limsup',
+//   liminf: '\\liminf',
+//   det: '\\det',
+//   gcd: '\\gcd',
+//   lcm: '\\lcm',
+//   mod: '\\mod',
+//   pmod: '\\pmod',
+//   bmod: '\\bmod',
+  
+//   // Greek letters (lowercase)
+//   alpha: '\\alpha',
+//   beta: '\\beta',
+//   gamma: '\\gamma',
+//   delta: '\\delta',
+//   epsilon: '\\epsilon',
+//   varepsilon: '\\varepsilon',
+//   zeta: '\\zeta',
+//   eta: '\\eta',
+//   theta: '\\theta',
+//   vartheta: '\\vartheta',
+//   iota: '\\iota',
+//   kappa: '\\kappa',
+//   lambda: '\\lambda',
+//   mu: '\\mu',
+//   nu: '\\nu',
+//   xi: '\\xi',
+//   pi: '\\pi',
+//   varpi: '\\varpi',
+//   rho: '\\rho',
+//   varrho: '\\varrho',
+//   sigma: '\\sigma',
+//   varsigma: '\\varsigma',
+//   tau: '\\tau',
+//   upsilon: '\\upsilon',
+//   phi: '\\phi',
+//   varphi: '\\varphi',
+//   chi: '\\chi',
+//   psi: '\\psi',
+//   omega: '\\omega',
+  
+//   // Greek letters (uppercase)
+//   Gamma: '\\Gamma',
+//   Delta: '\\Delta',
+//   Theta: '\\Theta',
+//   Lambda: '\\Lambda',
+//   Xi: '\\Xi',
+//   Pi: '\\Pi',
+//   Sigma: '\\Sigma',
+//   Upsilon: '\\Upsilon',
+//   Phi: '\\Phi',
+//   Psi: '\\Psi',
+//   Omega: '\\Omega',
+  
+//   // Special symbols
+//   infty: '\\infty',
+//   partial: '\\partial',
+//   nabla: '\\nabla',
+//   in: '\\in',
+//   notin: '\\notin',
+//   ni: '\\ni',
+//   subset: '\\subset',
+//   supset: '\\supset',
+//   subseteq: '\\subseteq',
+//   supseteq: '\\supseteq',
+//   cup: '\\cup',
+//   cap: '\\cap',
+//   wedge: '\\wedge',
+//   vee: '\\vee',
+//   lnot: '\\lnot',
+//   forall: '\\forall',
+//   exists: '\\exists',
+//   nexists: '\\nexists',
+//   emptyset: '\\emptyset',
+//   varnothing: '\\varnothing',
+//   prime: '\\prime',
+//   angle: '\\angle',
+//   measuredangle: '\\measuredangle',
+//   triangle: '\\triangle',
+//   diamond: '\\diamond',
+//   box: '\\Box',
+//   checkmark: '\\checkmark',
+//   dag: '\\dagger',
+//   ddag: '\\ddagger',
+//   star: '\\star',
+//   ast: '\\ast',
+//   circ: '\\circ',
+//   bullet: '\\bullet',
+//   cdot: '\\cdot',
+//   times: '\\times',
+//   div: '\\div',
+//   pm: '\\pm',
+//   mp: '\\mp',
+//   oplus: '\\oplus',
+//   ominus: '\\ominus',
+//   otimes: '\\otimes',
+//   oslash: '\\oslash',
+//   odot: '\\odot',
+//   equiv: '\\equiv',
+//   approx: '\\approx',
+//   sim: '\\sim',
+//   simeq: '\\simeq',
+//   cong: '\\cong',
+//   ne: '\\ne',
+//   le: '\\le',
+//   ge: '\\ge',
+//   ll: '\\ll',
+//   gg: '\\gg',
+//   prec: '\\prec',
+//   succ: '\\succ',
+//   preceq: '\\preceq',
+//   succeq: '\\succeq',
+//   subsetneq: '\\subsetneq',
+//   supsetneq: '\\supsetneq',
+//   to: '\\to',
+//   gets: '\\gets',
+//   leftarrow: '\\leftarrow',
+//   rightarrow: '\\rightarrow',
+//   Leftarrow: '\\Leftarrow',
+//   Rightarrow: '\\Rightarrow',
+//   leftrightarrow: '\\leftrightarrow',
+//   Leftrightarrow: '\\Leftrightarrow',
+//   uparrow: '\\uparrow',
+//   downarrow: '\\downarrow',
+//   Uparrow: '\\Uparrow',
+//   Downarrow: '\\Downarrow',
+  
+//   // Other common ones
+//   Re: '\\Re',
+//   Im: '\\Im',
+//   aleph: '\\aleph',
+//   hbar: '\\hbar',
+//   ell: '\\ell',
+//   wp: '\\wp',
+//   imath: '\\imath',
+//   jmath: '\\jmath',
+//   ldots: '\\ldots',
+//   cdots: '\\cdots',
+//   vdots: '\\vdots',
+//   ddots: '\\ddots',
+//   text: '\\text' // careful – only matches plain "text", not "\text"
+// };
+
+// /**
+//  * Converts plain-text math keywords (e.g., "int") to LaTeX commands ("\\int")
+//  * ONLY inside math regions ($...$ or $$...$$).
+//  */
+// function convertPlainTextToLatexInMathContext(text: string): string {
+//   console.log("🚀 convertPlainTextToLatexInMathContext called");
+  
+//   // First handle display math $$...$$
+//   let result = text.replace(/\$\$([\s\S]*?)\$\$/g, (match, inner) => {
+//     console.log("✅ Display math block found:", match);
+//     let processed = inner;
+//     const sortedKeys = Object.keys(plainTextToLatex).sort((a, b) => b.length - a.length);
+//     for (const key of sortedKeys) {
+//       const replacement = plainTextToLatex[key];
+//       const regex = new RegExp(`(?<![a-zA-Z])${key}(?![a-zA-Z])`, 'g');
+//       processed = processed.replace(regex, replacement);
+//     }
+//     return '$$\n' + processed.trim() + '\n$$';
+//   });
+
+//   // Then handle inline math $...$
+//   result = result.replace(/\$([^\n$]+?)\$/g, (match, inner) => {
+//     console.log("✅ Inline math block found:", match);
+//     let processed = inner;
+//     const sortedKeys = Object.keys(plainTextToLatex).sort((a, b) => b.length - a.length);
+//     for (const key of sortedKeys) {
+//       const replacement = plainTextToLatex[key];
+//       const regex = new RegExp(`(?<![a-zA-Z])${key}(?![a-zA-Z])`, 'g');
+//       processed = processed.replace(regex, replacement);
+//     }
+//     return '$' + processed + '$';
+//   });
+
+//   return result;
+// }
 
 export function preprocessMath(text: string): string {
   let result = text;
@@ -37,6 +250,9 @@ export function preprocessMath(text: string): string {
   result = result.replace(/\\sqrt\{\$([^$]+)\$\^(\d+)\s*\+\s*\$([^$]+)\$\^(\d+)\}/g, 
     (match, x, xexp, y, yexp) => `\\sqrt{(${x})^${xexp} + (${y})^${yexp}}`);
 
+//     // After fixing delimiters but before protecting math regions
+// result = convertPlainTextToLatexInMathContext(result);
+
   // 3. CRITICAL: Convert \(...\) to $...$ first (handle nested parens)
   result = result.replace(/\\\(([\s\S]*?)\\\)/g, (match, content) => {
     return '$' + content + '$';
@@ -47,7 +263,13 @@ export function preprocessMath(text: string): string {
   result = result.replace(/\\boxed([\s\S]*?)\n\s*\$\$/g, '$$\\boxed$1$$');
   
   // Now convert \[...\] 
-  result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => '$$\n' + content.trim() + '\n$$');
+  // result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => '$$\n' + content.trim() + '\n$$');
+  result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => {
+  // Ensure the opening $$ is on its own line by adding a leading newline
+  return '\n$$\n' + content.trim() + '\n$$\n';
+});
+
+
 
   // 5. Remove stray $ that are not at boundaries
   result = result
@@ -76,6 +298,11 @@ export function preprocessMath(text: string): string {
     processedLines.push(line);
   }
   result = processedLines.join('\n');
+
+// // 6a. Convert plain-text math keywords to LaTeX commands inside math regions
+// console.log("➡️ Before calling convertPlainTextToLatexInMathContext");
+// result = convertPlainTextToLatexInMathContext(result);
+// console.log("⬅️ After calling convertPlainTextToLatexInMathContext");
 
   // 7. Define LaTeX commands to protect
   const latexCommands = new Set([
