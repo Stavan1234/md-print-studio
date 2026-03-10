@@ -1,219 +1,6 @@
-// /**
-//  * Preprocesses text to detect and clean mathematical content.
-//  */
-
-// // Mapping from plain text math keywords to LaTeX commands
-// const plainTextToLatex: Record<string, string> = {
-//   // Operators
-//   int: '\\int',
-//   sum: '\\sum',
-//   prod: '\\prod',
-//   coprod: '\\coprod',
-//   bigcup: '\\bigcup',
-//   bigcap: '\\bigcap',
-//   bigvee: '\\bigvee',
-//   bigwedge: '\\bigwedge',
-//   bigoplus: '\\bigoplus',
-//   bigotimes: '\\bigotimes',
-//   bigodot: '\\bigodot',
-//   lim: '\\lim',
-//   log: '\\log',
-//   ln: '\\ln',
-//   exp: '\\exp',
-//   sin: '\\sin',
-//   cos: '\\cos',
-//   tan: '\\tan',
-//   cot: '\\cot',
-//   sec: '\\sec',
-//   csc: '\\csc',
-//   arcsin: '\\arcsin',
-//   arccos: '\\arccos',
-//   arctan: '\\arctan',
-//   sinh: '\\sinh',
-//   cosh: '\\cosh',
-//   tanh: '\\tanh',
-//   coth: '\\coth',
-//   max: '\\max',
-//   min: '\\min',
-//   sup: '\\sup',
-//   inf: '\\inf',
-//   limsup: '\\limsup',
-//   liminf: '\\liminf',
-//   det: '\\det',
-//   gcd: '\\gcd',
-//   lcm: '\\lcm',
-//   mod: '\\mod',
-//   pmod: '\\pmod',
-//   bmod: '\\bmod',
-  
-//   // Greek letters (lowercase)
-//   alpha: '\\alpha',
-//   beta: '\\beta',
-//   gamma: '\\gamma',
-//   delta: '\\delta',
-//   epsilon: '\\epsilon',
-//   varepsilon: '\\varepsilon',
-//   zeta: '\\zeta',
-//   eta: '\\eta',
-//   theta: '\\theta',
-//   vartheta: '\\vartheta',
-//   iota: '\\iota',
-//   kappa: '\\kappa',
-//   lambda: '\\lambda',
-//   mu: '\\mu',
-//   nu: '\\nu',
-//   xi: '\\xi',
-//   pi: '\\pi',
-//   varpi: '\\varpi',
-//   rho: '\\rho',
-//   varrho: '\\varrho',
-//   sigma: '\\sigma',
-//   varsigma: '\\varsigma',
-//   tau: '\\tau',
-//   upsilon: '\\upsilon',
-//   phi: '\\phi',
-//   varphi: '\\varphi',
-//   chi: '\\chi',
-//   psi: '\\psi',
-//   omega: '\\omega',
-  
-//   // Greek letters (uppercase)
-//   Gamma: '\\Gamma',
-//   Delta: '\\Delta',
-//   Theta: '\\Theta',
-//   Lambda: '\\Lambda',
-//   Xi: '\\Xi',
-//   Pi: '\\Pi',
-//   Sigma: '\\Sigma',
-//   Upsilon: '\\Upsilon',
-//   Phi: '\\Phi',
-//   Psi: '\\Psi',
-//   Omega: '\\Omega',
-  
-//   // Special symbols
-//   infty: '\\infty',
-//   partial: '\\partial',
-//   nabla: '\\nabla',
-//   in: '\\in',
-//   notin: '\\notin',
-//   ni: '\\ni',
-//   subset: '\\subset',
-//   supset: '\\supset',
-//   subseteq: '\\subseteq',
-//   supseteq: '\\supseteq',
-//   cup: '\\cup',
-//   cap: '\\cap',
-//   wedge: '\\wedge',
-//   vee: '\\vee',
-//   lnot: '\\lnot',
-//   forall: '\\forall',
-//   exists: '\\exists',
-//   nexists: '\\nexists',
-//   emptyset: '\\emptyset',
-//   varnothing: '\\varnothing',
-//   prime: '\\prime',
-//   angle: '\\angle',
-//   measuredangle: '\\measuredangle',
-//   triangle: '\\triangle',
-//   diamond: '\\diamond',
-//   box: '\\Box',
-//   checkmark: '\\checkmark',
-//   dag: '\\dagger',
-//   ddag: '\\ddagger',
-//   star: '\\star',
-//   ast: '\\ast',
-//   circ: '\\circ',
-//   bullet: '\\bullet',
-//   cdot: '\\cdot',
-//   times: '\\times',
-//   div: '\\div',
-//   pm: '\\pm',
-//   mp: '\\mp',
-//   oplus: '\\oplus',
-//   ominus: '\\ominus',
-//   otimes: '\\otimes',
-//   oslash: '\\oslash',
-//   odot: '\\odot',
-//   equiv: '\\equiv',
-//   approx: '\\approx',
-//   sim: '\\sim',
-//   simeq: '\\simeq',
-//   cong: '\\cong',
-//   ne: '\\ne',
-//   le: '\\le',
-//   ge: '\\ge',
-//   ll: '\\ll',
-//   gg: '\\gg',
-//   prec: '\\prec',
-//   succ: '\\succ',
-//   preceq: '\\preceq',
-//   succeq: '\\succeq',
-//   subsetneq: '\\subsetneq',
-//   supsetneq: '\\supsetneq',
-//   to: '\\to',
-//   gets: '\\gets',
-//   leftarrow: '\\leftarrow',
-//   rightarrow: '\\rightarrow',
-//   Leftarrow: '\\Leftarrow',
-//   Rightarrow: '\\Rightarrow',
-//   leftrightarrow: '\\leftrightarrow',
-//   Leftrightarrow: '\\Leftrightarrow',
-//   uparrow: '\\uparrow',
-//   downarrow: '\\downarrow',
-//   Uparrow: '\\Uparrow',
-//   Downarrow: '\\Downarrow',
-  
-//   // Other common ones
-//   Re: '\\Re',
-//   Im: '\\Im',
-//   aleph: '\\aleph',
-//   hbar: '\\hbar',
-//   ell: '\\ell',
-//   wp: '\\wp',
-//   imath: '\\imath',
-//   jmath: '\\jmath',
-//   ldots: '\\ldots',
-//   cdots: '\\cdots',
-//   vdots: '\\vdots',
-//   ddots: '\\ddots',
-//   text: '\\text' // careful – only matches plain "text", not "\text"
-// };
-
-// /**
-//  * Converts plain-text math keywords (e.g., "int") to LaTeX commands ("\\int")
-//  * ONLY inside math regions ($...$ or $$...$$).
-//  */
-// function convertPlainTextToLatexInMathContext(text: string): string {
-//   console.log("🚀 convertPlainTextToLatexInMathContext called");
-  
-//   // First handle display math $$...$$
-//   let result = text.replace(/\$\$([\s\S]*?)\$\$/g, (match, inner) => {
-//     console.log("✅ Display math block found:", match);
-//     let processed = inner;
-//     const sortedKeys = Object.keys(plainTextToLatex).sort((a, b) => b.length - a.length);
-//     for (const key of sortedKeys) {
-//       const replacement = plainTextToLatex[key];
-//       const regex = new RegExp(`(?<![a-zA-Z])${key}(?![a-zA-Z])`, 'g');
-//       processed = processed.replace(regex, replacement);
-//     }
-//     return '$$\n' + processed.trim() + '\n$$';
-//   });
-
-//   // Then handle inline math $...$
-//   result = result.replace(/\$([^\n$]+?)\$/g, (match, inner) => {
-//     console.log("✅ Inline math block found:", match);
-//     let processed = inner;
-//     const sortedKeys = Object.keys(plainTextToLatex).sort((a, b) => b.length - a.length);
-//     for (const key of sortedKeys) {
-//       const replacement = plainTextToLatex[key];
-//       const regex = new RegExp(`(?<![a-zA-Z])${key}(?![a-zA-Z])`, 'g');
-//       processed = processed.replace(regex, replacement);
-//     }
-//     return '$' + processed + '$';
-//   });
-
-//   return result;
-// }
+/**
+ * Preprocesses text to detect and clean mathematical content.
+ */
 
 export function preprocessMath(text: string): string {
   let result = text;
@@ -221,15 +8,66 @@ export function preprocessMath(text: string): string {
   // 1. Normalize line endings
   result = result.replace(/\r\n/g, '\n');
 
-  // 2. Fix broken patterns BEFORE any $ protection
-  
+  // 2. Identify tables but don't protect them – just store them temporarily
+  // This allows math inside tables to be processed normally
+  const tables: string[] = [];
+  const tableLines: number[] = [];
+  const initialLines = result.split('\n');
+  let inTable = false;
+  let tableStart = 0;
+
+  for (let i = 0; i < initialLines.length; i++) {
+    const line = initialLines[i];
+    // Detect table row (contains | and at least two |)
+    if (line.includes('|') && line.split('|').length >= 3) {
+      if (!inTable) {
+        inTable = true;
+        tableStart = i;
+      }
+    } else {
+      if (inTable) {
+        inTable = false;
+        // Extract the table block
+        const tableBlock = initialLines.slice(tableStart, i).join('\n');
+        tables.push(tableBlock);
+        // Mark these lines as part of a table
+        for (let j = tableStart; j < i; j++) {
+          tableLines.push(j);
+        }
+      }
+    }
+  }
+  // Handle case where table goes to end of file
+  if (inTable) {
+    const tableBlock = initialLines.slice(tableStart).join('\n');
+    tables.push(tableBlock);
+    for (let j = tableStart; j < initialLines.length; j++) {
+      tableLines.push(j);
+    }
+  }
+
+  // Join lines back
+  result = initialLines.join('\n');
+
+  // Mark table lines with a special marker that won't interfere with math
+  const markedLines: string[] = [];
+  for (let i = 0; i < initialLines.length; i++) {
+    if (tableLines.includes(i)) {
+      markedLines.push(`__TABLE_LINE_${tableLines.indexOf(i)}__`);
+    } else {
+      markedLines.push(initialLines[i]);
+    }
+  }
+  result = markedLines.join('\n');
+
+  // 3. Fix broken patterns BEFORE any $ protection
   // Fix \maxbig$|...|,\;|...|big$ -> \max(|...|, |...|)
   result = result.replace(/\\maxbig\s*\$([^$]+)\$big\$/g, (match, content) => {
     content = content.replace(/\|([^|]+)\|/g, '\\lvert$1\\rvert');
     content = content.replace(/,\s*\\;/g, ',');
     return '\\max(' + content + ')';
   });
-  
+
   // Fix d_8 = \max\big|...|,|...|\big -> d_8 = \max{...}
   result = result.replace(
     /d_8\s*=\s*\\max(?:\\big)?\|([^|]+)\|,;?\|([^|]+)\|(?:\\big)?/g,
@@ -247,64 +85,48 @@ export function preprocessMath(text: string): string {
   result = result.replace(/\^(\{[^}]+\})\$([^$]+)\$/g, '^($1)$2');
 
   // d_E = \sqrt{$x_2 - x_1$^2 + $y_2 - y_1$^2}
-  result = result.replace(/\\sqrt\{\$([^$]+)\$\^(\d+)\s*\+\s*\$([^$]+)\$\^(\d+)\}/g, 
+  result = result.replace(/\\sqrt\{\$([^$]+)\$\^(\d+)\s*\+\s*\$([^$]+)\$\^(\d+)\}/g,
     (match, x, xexp, y, yexp) => `\\sqrt{(${x})^${xexp} + (${y})^${yexp}}`);
 
-//     // After fixing delimiters but before protecting math regions
-// result = convertPlainTextToLatexInMathContext(result);
+  // 4. Convert \(...\) to $...$
+  result = result.replace(/\\\(([\s\S]*?)\\\)/g, (match, content) => '$' + content + '$');
 
-  // 3. CRITICAL: Convert \(...\) to $...$ first (handle nested parens)
-  result = result.replace(/\\\(([\s\S]*?)\\\)/g, (match, content) => {
-    return '$' + content + '$';
-  });
-
-  // 4. Convert \[...\] to $$...$$ - fix broken $$ first
+  // 5. Convert \[...\] to $$...$$
   result = result.replace(/\$\$\s*\n\s*\\boxed/g, '$$\n\\boxed');
   result = result.replace(/\\boxed([\s\S]*?)\n\s*\$\$/g, '$$\\boxed$1$$');
-  
-  // Now convert \[...\] 
-  // result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => '$$\n' + content.trim() + '\n$$');
   result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => {
-  // Ensure the opening $$ is on its own line by adding a leading newline
-  return '\n$$\n' + content.trim() + '\n$$\n';
-});
+    return '\n$$\n' + content.trim() + '\n$$\n';
+  });
 
-
-
-  // 5. Remove stray $ that are not at boundaries
+  // 6. Remove stray $ that are not at boundaries
   result = result
     .replace(/\$([^\$]+)\$\s*([\^_{])/g, '$1$2')
     .replace(/([\^_{])\s*\$([^\$]+)\$/g, '$1$2');
 
-  // 6. Handle parenthesized formulas: (formula) -> $formula$
-  const lines = result.split('\n');
-  const processedLines: string[] = [];
-  
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-    
+  // 7. Handle parenthesized formulas: (formula) -> $formula$
+  const parenLines = result.split('\n');
+  const processedParenLines: string[] = [];
+
+  for (let i = 0; i < parenLines.length; i++) {
+    let line = parenLines[i];
+
     if (line.includes('$') || /^#{1,6}\s/.test(line) || /^[-*•]\s/.test(line)) {
-      processedLines.push(line);
+      processedParenLines.push(line);
       continue;
     }
-    
+
     line = line.replace(/^\s*\(([^)]+)\)\s*$/gm, (match, inner) => {
       if (hasLatexCommand(inner) || looksLikeStrictMath(inner) || /^[d_]\d*=|\\/.test(inner)) {
         return '$' + inner + '$';
       }
       return match;
     });
-    
-    processedLines.push(line);
+
+    processedParenLines.push(line);
   }
-  result = processedLines.join('\n');
+  result = processedParenLines.join('\n');
 
-// // 6a. Convert plain-text math keywords to LaTeX commands inside math regions
-// console.log("➡️ Before calling convertPlainTextToLatexInMathContext");
-// result = convertPlainTextToLatexInMathContext(result);
-// console.log("⬅️ After calling convertPlainTextToLatexInMathContext");
-
-  // 7. Define LaTeX commands to protect
+  // 8. Define LaTeX commands to protect
   const latexCommands = new Set([
     'frac', 'sqrt', 'boxed', 'text', 'cdot', 'times', 'div', 'pm', 'mp',
     'leq', 'geq', 'neq', 'approx', 'infty', 'partial', 'nabla', 'int',
@@ -330,7 +152,7 @@ export function preprocessMath(text: string): string {
     'rarr', 'larr', 'uarr', 'darr', 'to', 'rightarrow', 'leftarrow', 'uparrow', 'downarrow'
   ]);
 
-  // 8. Protect math regions $...$ and $$...$$ FIRST
+  // 9. Protect math regions $...$ and $$...$$ FIRST
   const mathRegions: string[] = [];
   result = result.replace(/(\$[^\$]*\$|\$\$[\s\S]*?\$\$)/g, (match) => {
     mathRegions.push(match);
@@ -356,10 +178,10 @@ export function preprocessMath(text: string): string {
   // Remove backslashes before numbers
   result = result.replace(/\\(\d+)/g, '$1');
 
-  // 9. Restore math regions
+  // 10. Restore math regions
   result = result.replace(/@@MATH_REGION_(\d+)@@/g, (_, index) => mathRegions[parseInt(index)]);
 
-  // 10. Continue with cleaning
+  // 11. Continue with cleaning
   result = result
     .replace(/\^{\s*\\wedge\s*}/g, '^')
     .replace(/\\text\s+{/g, '\\text{')
@@ -369,12 +191,12 @@ export function preprocessMath(text: string): string {
       return match.replace(/\\\$/g, '\\\\').replace(/\$/g, '');
     });
 
-  // 11. Protect ASCII diagrams
+  // 12. Protect ASCII diagrams
   result = result.replace(/^\s*\$\s*\([^)]+\)\s*\([^)]+\)\s*\([^)]+\)\s*\$\s*$/gm, (match) => {
     return match.replace(/\$/g, '');
   });
 
-  // 12. Protect existing math regions again
+  // 13. Protect existing math regions again (for the wrapping step)
   const protectedBlocks: string[] = [];
   result = result.replace(
     /(\$\$[^\$]*\$\$|\$[^\$]*\$)/g,
@@ -384,50 +206,52 @@ export function preprocessMath(text: string): string {
     }
   );
 
-  // 13. Heuristic: wrap standalone math lines
+  // 14. Heuristic: wrap standalone math lines (currently disabled)
+  /*
   const finalLines = result.split('\n');
   for (let idx = 0; idx < finalLines.length; idx++) {
     const line = finalLines[idx].trim();
-    
-    if (!line || line.startsWith('$') || line.startsWith('\\') || 
-        line.startsWith('@@PROTECTED') || line.includes('$') || line.includes('@@PROTECTED')) {
-      continue;
-    }
-    if (/^#{1,6}\s|^[-*•]\s|^\d+\.\s|\*\*/.test(line)) {
-      continue;
-    }
-    if (isAsciiDiagram(line)) {
-      continue;
-    }
-    
-    if (hasLatexCommand(line) && !looksLikeProse(line)) {
-      finalLines[idx] = '$' + line + '$';
-      continue;
-    }
-    
-    if (line.includes('|') && line.length < 80) {
-      if (/^\s*[dd]_[48]\s*=|^\\sqrt\{/.test(line) || /\|.+\|/.test(line)) {
-        finalLines[idx] = '$' + line + '$';
-        continue;
-      }
-    }
-    
-    if (/City|Block|Manhattan|Chessboard|Distance|Euclidean/i.test(line)) {
-      continue;
-    }
-    
-    const lineWithoutTrailingPunct = line.replace(/[.,;:]$/, '');
-    if (lineWithoutTrailingPunct.length > 100) continue;
-    if (line.includes('  ')) continue;
-    if (looksLikeStrictMath(lineWithoutTrailingPunct) && !containsProse(lineWithoutTrailingPunct)) {
-      finalLines[idx] = '$' + line + '$';
-    }
+    // ... existing heuristic ...
   }
   result = finalLines.join('\n');
+  */
 
-  // 14. Restore protected blocks
+  // 15. Restore protected blocks
   result = result.replace(/@@PROTECTED_(\d+)@@/g, (_, index) => protectedBlocks[parseInt(index)]);
 
+    // 16. Restore table lines
+  const finalLines = result.split('\n');
+  const restoredLines: string[] = [];
+  
+  for (let i = 0; i < finalLines.length; i++) {
+    const line = finalLines[i];
+    const match = line.match(/__TABLE_LINE_(\d+)__/);
+    
+    if (match) {
+      const lineMarkerIndex = parseInt(match[1]); // This is the index in tableLines array
+      
+      // Find which table this line belongs to and which row within that table
+      let found = false;
+      for (let t = 0; t < tables.length; t++) {
+        const tableRows = tables[t].split('\n');
+        // Check if this line marker corresponds to a row in this table
+        if (lineMarkerIndex < tableRows.length) {
+          restoredLines.push(tableRows[lineMarkerIndex]);
+          found = true;
+          break;
+        }
+      }
+      
+      if (!found) {
+        // Fallback: just use the original line
+        restoredLines.push(line);
+      }
+    } else {
+      restoredLines.push(line);
+    }
+  }
+  
+  result = restoredLines.join('\n');
   console.log("PREPROCESSED:", result);
   return result;
 }
@@ -435,19 +259,6 @@ export function preprocessMath(text: string): string {
 function hasLatexCommand(line: string): boolean {
   const latexCmdPattern = /\\(sqrt|frac|cdot|times|pm|infty|int|sum|prod|leq|geq|neq|approx|partial|nabla|max|min|lim|sin|cos|tan|log|exp|alpha|beta|gamma|delta|theta|lambda|pi|sigma|omega|cdot|leftarrow|rightarrow|Rightarrow|Leftrightarrow)/;
   return latexCmdPattern.test(line);
-}
-
-function looksLikeProse(line: string): boolean {
-  const words = line.match(/[a-zA-Z]{3,}/g) || [];
-  return words.length > 3;
-}
-
-function isAsciiDiagram(line: string): boolean {
-  const coordPattern = /\(\s*[a-zA-Z0-9]+[+-]\d+\s*,\s*[a-zA-Z0-9]+[+-]\d+\s*\)/;
-  const matches = line.match(coordPattern);
-  if (!matches) return false;
-  const coordCount = (line.match(/\([^)]+\)/g) || []).length;
-  return coordCount >= 2 || (coordCount === 1 && line.length < 50);
 }
 
 function looksLikeStrictMath(str: string): boolean {
@@ -475,16 +286,4 @@ function looksLikeStrictMath(str: string): boolean {
   if (/^d_[E48]\s*=/.test(s)) return true;
 
   return false;
-}
-
-function containsProse(str: string): boolean {
-  const proseWords = [
-    'the', 'and', 'for', 'with', 'this', 'that', 'from', 'have',
-    'illumination', 'reflectance', 'intensity', 'image', 'function',
-    'coordinates', 'pixel', 'matrix', 'discrete', 'spatial', 'distance',
-    'euclidean', 'city', 'block', 'chessboard', 'center', 'ascii', 'memorize',
-    'manhattan', 'chebyshev'
-  ];
-  const lower = str.toLowerCase();
-  return proseWords.some(word => lower.includes(word));
 }

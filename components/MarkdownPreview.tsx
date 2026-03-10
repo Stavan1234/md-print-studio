@@ -37,3 +37,4 @@ export default function MarkdownPreview({ content }: Props) {
     </div>
   );
 }
+
