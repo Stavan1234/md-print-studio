@@ -8,9 +8,7 @@ export function preprocessMath(text: string): string {
   // 1. Normalize line endings
   result = result.replace(/\r\n/g, '\n');
 
-  // 2. Identify tables but don't protect them – just store them temporarily
-  // This allows math inside tables to be processed normally
-  const tables: string[] = [];
+  // 2. Identify tables and protect them entirely
   const tableLines: number[] = [];
   const initialLines = result.split('\n');
   let inTable = false;
@@ -27,9 +25,6 @@ export function preprocessMath(text: string): string {
     } else {
       if (inTable) {
         inTable = false;
-        // Extract the table block
-        const tableBlock = initialLines.slice(tableStart, i).join('\n');
-        tables.push(tableBlock);
         // Mark these lines as part of a table
         for (let j = tableStart; j < i; j++) {
           tableLines.push(j);
@@ -39,8 +34,6 @@ export function preprocessMath(text: string): string {
   }
   // Handle case where table goes to end of file
   if (inTable) {
-    const tableBlock = initialLines.slice(tableStart).join('\n');
-    tables.push(tableBlock);
     for (let j = tableStart; j < initialLines.length; j++) {
       tableLines.push(j);
     }
@@ -50,10 +43,12 @@ export function preprocessMath(text: string): string {
   result = initialLines.join('\n');
 
   // Mark table lines with a special marker that won't interfere with math
+  const extractedTableLines: string[] = [];
   const markedLines: string[] = [];
   for (let i = 0; i < initialLines.length; i++) {
     if (tableLines.includes(i)) {
-      markedLines.push(`__TABLE_LINE_${tableLines.indexOf(i)}__`);
+      extractedTableLines.push(initialLines[i]);
+      markedLines.push(`__TABLE_LINE_${extractedTableLines.length - 1}__`);
     } else {
       markedLines.push(initialLines[i]);
     }
@@ -228,22 +223,10 @@ export function preprocessMath(text: string): string {
     const match = line.match(/__TABLE_LINE_(\d+)__/);
     
     if (match) {
-      const lineMarkerIndex = parseInt(match[1]); // This is the index in tableLines array
-      
-      // Find which table this line belongs to and which row within that table
-      let found = false;
-      for (let t = 0; t < tables.length; t++) {
-        const tableRows = tables[t].split('\n');
-        // Check if this line marker corresponds to a row in this table
-        if (lineMarkerIndex < tableRows.length) {
-          restoredLines.push(tableRows[lineMarkerIndex]);
-          found = true;
-          break;
-        }
-      }
-      
-      if (!found) {
-        // Fallback: just use the original line
+      const lineMarkerIndex = parseInt(match[1]);
+      if (lineMarkerIndex < extractedTableLines.length) {
+        restoredLines.push(extractedTableLines[lineMarkerIndex]);
+      } else {
         restoredLines.push(line);
       }
     } else {

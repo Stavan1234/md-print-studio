@@ -34,7 +34,8 @@ export async function POST(request: Request) {
   if (!content) return new Response(JSON.stringify({ error: "No content" }), { status: 400 });
 
   const host = request.headers.get("host");
-  const baseUrl = `https://${host}`;
+  const protocol = host?.includes("localhost") ? "http" : "https";
+  const baseUrl = `${protocol}://${host}`;
 
   try {
     const browser = await getBrowser();

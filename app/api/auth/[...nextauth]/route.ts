@@ -1,7 +1,9 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-const handler = NextAuth({
+import { NextAuthOptions } from 'next-auth';
+
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -10,7 +12,8 @@ const handler = NextAuth({
         params: {
           prompt: "consent",
           access_type: "offline",
-          response_type: "code"
+          response_type: "code",
+          scope: "openid email profile https://www.googleapis.com/auth/drive.file"
         }
       }
     }),
@@ -18,25 +21,27 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   
   callbacks: {
-    async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
+    async redirect({ url, baseUrl }) {
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
-    async jwt({ token, account }: { token: any; account: any }) {
+    async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
-      session.accessToken = token.accessToken;
+    async session({ session, token }) {
+      (session as any).accessToken = token.accessToken;
       return session;
     },
   },
   
   debug: process.env.NODE_ENV === 'development',
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 

@@ -1,63 +1,67 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
-// Create uploads directory in the project (or use a temp directory)
-const UPLOAD_DIR = join(process.cwd(), 'public', 'uploads');
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
 
-export async function POST(request: NextRequest) {
-  try {
-    const formData = await request.formData();
-    const file = formData.get('file') as File | null;
-    
-    if (!file) {
-      return NextResponse.json(
-        { error: 'No file provided' },
-        { status: 400 }
-      );
-    }
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json(
-        { error: 'File must be an image' },
-        { status: 400 }
-      );
-    }
-
-    // Create uploads directory if it doesn't exist
-    try {
-      await mkdir(UPLOAD_DIR, { recursive: true });
-    } catch {
-      // Directory might already exist
-    }
-
-    // Generate unique filename
-    const timestamp = Date.now();
-    const extension = file.name.split('.').pop() || 'png';
-    const filename = `image-${timestamp}.${extension}`;
-    const filepath = join(UPLOAD_DIR, filename);
-
-    // Convert file to buffer and save
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    
-    await writeFile(filepath, buffer);
-
-    // Return the public URL path
-    const url = `/uploads/${filename}`;
-    
-    return NextResponse.json({ 
-      url,
-      filename,
-      success: true 
-    });
-  } catch (error) {
-    console.error('Error saving image:', error);
-    return NextResponse.json(
-      { error: 'Failed to save image' },
-      { status: 500 }
-    );
+  if (!(session as any)?.accessToken) {
+    return new Response("Unauthorized", { status: 401 });
   }
-}
 
+  const formData = await req.formData();
+  const file = formData.get("file") as File;
+
+  const metadata = {
+    name: file.name,
+  };
+
+  const boundary = "foo_bar_baz";
+
+  const body =
+    `--${boundary}\r\n` +
+    "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+    JSON.stringify(metadata) +
+    `\r\n--${boundary}\r\n` +
+    `Content-Type: ${file.type}\r\n\r\n`;
+
+  const fileBuffer = await file.arrayBuffer();
+
+  const end = `\r\n--${boundary}--`;
+
+  const multipartBody = new Blob([body, fileBuffer, end]);
+
+  const res = await fetch(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${(session as any).accessToken}`,
+        "Content-Type": `multipart/related; boundary=${boundary}`,
+      },
+      body: multipartBody,
+    }
+  );
+
+  const data = await res.json();
+  const fileId = data.id;
+
+  if (fileId) {
+    // Make the file publicly accessible so the <img> tag can load it without auth
+    await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${(session as any).accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        role: "reader",
+        type: "anyone",
+      }),
+    });
+  }
+
+  return Response.json({
+    fileId: fileId,
+    url: `/api/image/${fileId}`,
+  });
+}

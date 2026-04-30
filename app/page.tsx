@@ -18,6 +18,13 @@ $$
 `);
 
   const [isFixing, setIsFixing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: "error" | "success" } | null>(null);
+
+  const showToast = (message: string, type: "error" | "success" = "error") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleFixWithAI = async () => {
     setIsFixing(true);
@@ -46,6 +53,11 @@ $$
   });
 
   const handlePaste = async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    if (!session) {
+      alert("Sign in with Google to paste images");
+      return;
+    }
+
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') === 0) {
@@ -71,7 +83,8 @@ $$
           });
 
           if (response.ok) {
-            const { url } = await response.json();
+            const data = await response.json();
+            const { url } = data;
             
             // Create markdown image tag with local path
             const imageMarkdown = `![image](${url})`;
@@ -102,6 +115,7 @@ $$
   };
 
   const handleExportPdf = async () => {
+    setIsExporting(true);
     try {
       const response = await fetch("/api/pdf", {
         method: "POST",
@@ -114,6 +128,7 @@ $$
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Failed to generate PDF", errorText);
+        showToast(`Failed to generate PDF: ${JSON.parse(errorText).error || 'Unknown error'}`, "error");
         return;
       }
 
@@ -126,8 +141,13 @@ $$
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-    } catch (error) {
+      
+      showToast("PDF exported successfully!", "success");
+    } catch (error: any) {
       console.error("Error generating PDF", error);
+      showToast(`Error generating PDF: ${error.message || 'Unknown error'}`, "error");
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -210,6 +230,31 @@ $$
           </div>
         </div>
       </main>
+
+      {isExporting && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-xl transition-all duration-500">
+          <div className="relative flex flex-col items-center justify-center p-10 rounded-3xl bg-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-2xl border border-white/20">
+            <div className="relative flex h-32 w-32 items-center justify-center mb-6">
+              <div className="absolute h-full w-full animate-ping rounded-full bg-blue-500 opacity-20"></div>
+              <div className="absolute h-24 w-24 animate-spin rounded-full border-[6px] border-solid border-white border-t-transparent shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
+              <div className="absolute h-16 w-16 animate-pulse rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 shadow-inner"></div>
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight text-white animate-pulse drop-shadow-md">
+              Crafting your PDF...
+            </h2>
+            <p className="mt-3 text-base text-blue-100/80 font-medium">
+              We're polishing the pixels, please wait a moment.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className={`fixed bottom-6 right-6 z-[110] flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md border border-white/10 transition-all duration-300 animate-in slide-in-from-bottom-5 ${toast.type === 'error' ? 'bg-red-500/90 text-white' : 'bg-green-500/90 text-white'}`}>
+          <span className="text-xl">{toast.type === 'error' ? '⚠️' : '✅'}</span>
+          <p className="font-medium">{toast.message}</p>
+        </div>
+      )}
     </>
   );
 }
