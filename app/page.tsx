@@ -197,6 +197,7 @@ $$
       </div>
 
       <main className="min-h-screen bg-zinc-50 px-6 py-8">
+        <h1 className="sr-only">MD Print Studio - Convert ChatGPT Text to Beautiful PDFs</h1>
         <div className="mx-auto max-w-6xl">
           <button
             onClick={handleFixWithAI}
