@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "katex/dist/katex.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
 :root {
   --background: #ffffff;
@@ -129,7 +130,7 @@ body {
   }
 
   .print-body {
-    font-family: "Times New Roman", serif;
+    font-family: "Times New Roman", "Noto Color Emoji", "Segoe UI Emoji", "Apple Color Emoji", serif;
     font-size: 12pt;
     line-height: 1.5;
   }
@@ -158,6 +159,13 @@ body {
     font-weight: 500;
   }
 
+  /* Remove default backticks added by Tailwind for print */
+  .print-body :not(pre) > code::before,
+  .print-body :not(pre) > code::after {
+    content: "" !important;
+    display: none !important;
+  }
+
   /* Sharp Table Borders for Print */
   .print-body th, .print-body td {
     border: 1px solid #000000 !important;
@@ -166,6 +174,22 @@ body {
 
   .print-body th {
     background-color: #eeeeee !important;
+  }
+
+  /* Ensure blockquotes are clearly visible in print */
+  .print-body blockquote {
+    border-left: 4pt solid #9ca3af !important;
+    padding-left: 1rem !important;
+    color: #374151 !important;
+    font-style: italic;
+    margin: 1em 0;
+  }
+
+  /* Ensure horizontal rules are clearly visible */
+  .print-body hr {
+    border: 0;
+    border-top: 1pt solid #9ca3af !important;
+    margin: 2em 0;
   }
 
   .no-print {

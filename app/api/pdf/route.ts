@@ -47,6 +47,9 @@ export async function POST(request: Request) {
 
     await page.goto(`${baseUrl}/print`, { waitUntil: "networkidle0" });
     await page.emulateMediaType("print");
+    
+    // Ensure all web fonts (like Noto Color Emoji) are fully loaded before printing
+    await page.evaluateHandle('document.fonts.ready');
 
     const pdfBuffer = await page.pdf({
       format: "A4",
