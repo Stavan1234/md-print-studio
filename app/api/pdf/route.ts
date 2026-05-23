@@ -46,10 +46,17 @@ export async function POST(request: Request) {
     }, content);
 
     await page.goto(`${baseUrl}/print`, { waitUntil: "networkidle0" });
+    
+    // Explicitly wait for React and KaTeX to finish rendering
+    await page.waitForSelector('#render-complete', { timeout: 15000 });
+    
     await page.emulateMediaType("print");
     
     // Ensure all web fonts (like Noto Color Emoji) are fully loaded before printing
     await page.evaluateHandle('document.fonts.ready');
+    
+    // Small buffer to allow fonts to paint
+    await new Promise(r => setTimeout(r, 500));
 
     const pdfBuffer = await page.pdf({
       format: "A4",
