@@ -13,6 +13,13 @@ export default function PrintPage() {
       setContent(globalAny.__MD_PRINT_CONTENT__);
       // Give React/KaTeX time to fully paint the DOM
       setTimeout(() => {
+        if (globalAny.twemoji) {
+          globalAny.twemoji.parse(document.body, {
+            folder: 'svg',
+            ext: '.svg',
+            base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'
+          });
+        }
         setRendered(true);
       }, 800);
     } else {

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "katex/dist/katex.min.css";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
 :root {
   --background: #ffffff;
@@ -48,6 +47,16 @@ body {
   overflow-x: auto;
   max-width: 100%;
   word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Ensure wide KaTeX math equations can be scrolled horizontally without breaking layout */
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 /* High Contrast Code Blocks for Screen */
@@ -115,6 +124,53 @@ body {
   font-style: italic;
 }
 
+/* ===== GITHUB ALERTS ===== */
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 0.25rem solid #d0d7de;
+  background-color: #f8fafc;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.markdown-alert > :first-child {
+  margin-top: 0;
+}
+
+.markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert-title {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  line-height: 1;
+  margin-bottom: 0.5rem !important;
+  font-size: 0.95em;
+}
+
+.markdown-alert-title svg.octicon {
+  margin-right: 0.5rem;
+  fill: currentColor;
+}
+
+/* Alert Colors */
+.markdown-alert-note { border-left-color: #0969da; }
+.markdown-alert-note .markdown-alert-title { color: #0969da; }
+
+.markdown-alert-tip { border-left-color: #1a7f37; }
+.markdown-alert-tip .markdown-alert-title { color: #1a7f37; }
+
+.markdown-alert-important { border-left-color: #8250df; }
+.markdown-alert-important .markdown-alert-title { color: #8250df; }
+
+.markdown-alert-warning { border-left-color: #bf8700; background-color: #fff8c5; }
+.markdown-alert-warning .markdown-alert-title { color: #bf8700; }
+
+.markdown-alert-caution { border-left-color: #cf222e; background-color: #ffebe9; }
+.markdown-alert-caution .markdown-alert-title { color: #cf222e; }
+
 /* ===== A4 PRINT ENGINE ===== */
 
 @media print {
@@ -130,9 +186,18 @@ body {
   }
 
   .print-body {
-    font-family: "Times New Roman", "Noto Color Emoji", "Segoe UI Emoji", "Apple Color Emoji", serif;
+    font-family: "Times New Roman", "Segoe UI Emoji", "Apple Color Emoji", serif;
     font-size: 12pt;
     line-height: 1.5;
+  }
+
+  /* Twemoji Print Styles */
+  .print-body img.emoji {
+    height: 1em !important;
+    width: 1em !important;
+    margin: 0 .05em 0 .1em !important;
+    vertical-align: -0.1em !important;
+    display: inline !important;
   }
 
   /* Print Code Blocks: Forced High Contrast Light Mode */
@@ -197,7 +262,7 @@ body {
   }
 
   /* Prevent awkward page breaks */
-  h1, h2, h3, pre, table, blockquote {
+  h1, h2, h3, pre, table, blockquote, .mermaid {
     page-break-inside: avoid;
   }
 }

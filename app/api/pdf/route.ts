@@ -50,6 +50,18 @@ export async function POST(request: Request) {
     // Explicitly wait for React and KaTeX to finish rendering
     await page.waitForSelector('#render-complete', { timeout: 15000 });
     
+    // Explicitly wait for all images (including Twemoji SVGs) to load
+    await page.evaluate(async () => {
+      const selectors = Array.from(document.querySelectorAll('img'));
+      await Promise.all(selectors.map(img => {
+        if (img.complete) return;
+        return new Promise((resolve, reject) => {
+          img.addEventListener('load', resolve);
+          img.addEventListener('error', resolve); // resolve on error to avoid hanging
+        });
+      }));
+    });
+    
     await page.emulateMediaType("print");
     
     // Ensure all web fonts (like Noto Color Emoji) are fully loaded before printing

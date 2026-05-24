@@ -5,8 +5,9 @@
 export function preprocessMath(text: string): string {
   let result = text;
 
-  // 1. Normalize line endings
+  // 1. Normalize line endings and non-breaking spaces (which break remark-math)
   result = result.replace(/\r\n/g, '\n');
+  result = result.replace(/\u00A0/g, ' ');
 
   // 2. Identify tables and protect them entirely
   const tableLines: number[] = [];
@@ -84,13 +85,23 @@ export function preprocessMath(text: string): string {
     (match, x, xexp, y, yexp) => `\\sqrt{(${x})^${xexp} + (${y})^${yexp}}`);
 
   // 4. Convert \(...\) to $...$
-  result = result.replace(/\\\(([\s\S]*?)\\\)/g, (match, content) => '$' + content + '$');
+  result = result.replace(/\\\(([\s\S]*?)\\\)/g, (match, content) => '$' + content.trim() + '$');
 
   // 5. Convert \[...\] to $$...$$
   result = result.replace(/\$\$\s*\n\s*\\boxed/g, '$$\n\\boxed');
   result = result.replace(/\\boxed([\s\S]*?)\n\s*\$\$/g, '$$\\boxed$1$$');
   result = result.replace(/\\\[([\s\S]*?)\\\]/g, (match, content) => {
     return '\n$$\n' + content.trim() + '\n$$\n';
+  });
+
+  // 5.5 Fix strict inline math parsing: $ x = 5 $ -> $x = 5$
+  // remark-math ignores $ delimiters if they have spaces directly inside them.
+  result = result.replace(/(^|[^$])\$([ \t]+[^$\n]+?|[^$\n]+?[ \t]+)\$/g, (match, pre, inner) => {
+    const trimmed = inner.trim();
+    if (looksLikeStrictMath(trimmed) || /^[a-zA-Z0-9=+\-*/^_{}\\]+$/.test(trimmed.replace(/\s/g, ''))) {
+      return pre + '$' + trimmed + '$';
+    }
+    return match;
   });
 
   // 6. Remove stray $ that are not at boundaries
@@ -148,8 +159,10 @@ export function preprocessMath(text: string): string {
   ]);
 
   // 9. Protect math regions $...$ and $$...$$ FIRST
+  // Regex order matters! Match $$...$$ first, then $...$
+  // Use negative lookbehind to ignore escaped dollars \$
   const mathRegions: string[] = [];
-  result = result.replace(/(\$[^\$]*\$|\$\$[\s\S]*?\$\$)/g, (match) => {
+  result = result.replace(/(\$\$[\s\S]*?\$\$|(?<!\\)\$(?:\\\$|[^$])+(?<!\\)\$)/g, (match) => {
     mathRegions.push(match);
     return `@@MATH_REGION_${mathRegions.length - 1}@@`;
   });
@@ -194,7 +207,7 @@ export function preprocessMath(text: string): string {
   // 13. Protect existing math regions again (for the wrapping step)
   const protectedBlocks: string[] = [];
   result = result.replace(
-    /(\$\$[^\$]*\$\$|\$[^\$]*\$)/g,
+    /(\$\$[\s\S]*?\$\$|(?<!\\)\$(?:\\\$|[^$])+(?<!\\)\$)/g,
     (match) => {
       protectedBlocks.push(match);
       return `@@PROTECTED_${protectedBlocks.length - 1}@@`;

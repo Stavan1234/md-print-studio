@@ -43,6 +43,15 @@ export async function POST(req: Request) {
   );
 
   const data = await res.json();
+  
+  if (!res.ok || !data.id) {
+    console.error("Google Drive Upload Error:", data);
+    return new Response(JSON.stringify({ error: "Failed to upload to Google Drive", details: data }), { 
+      status: res.status || 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
   const fileId = data.id;
 
   if (fileId) {
